@@ -21,6 +21,10 @@ body::after { content: ""; position: fixed; inset: 0; background-image: url("dat
 .cursor-ring { width: 30px; height: 30px; border: 1px solid rgba(200,169,126,0.45); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); transition: transform 0.2s; }
 @keyframes shake { 0% { transform: translateX(0); } 15% { transform: translateX(-7px); } 30% { transform: translateX(7px); } 45% { transform: translateX(-5px); } 60% { transform: translateX(5px); } 75% { transform: translateX(-3px); } 90% { transform: translateX(3px); } 100% { transform: translateX(0); } }
 body.shaking { animation: shake 0.45s ease; }
+.film-intro { position: fixed; inset: 0; background: #000; z-index: 99999; display: flex; align-items: center; justify-content: center; animation: filmFade 2.8s ease forwards; }
+.film-intro span { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; letter-spacing: 0.3em; color: #555; animation: textFade 2.8s ease forwards; }
+@keyframes filmFade { 0% { opacity: 1; } 60% { opacity: 1; } 100% { opacity: 0; pointer-events: none; } }
+@keyframes textFade { 0% { opacity: 0; letter-spacing: 0.6em; } 30% { opacity: 1; letter-spacing: 0.3em; } 70% { opacity: 1; } 100% { opacity: 0; } }
 nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 22px 32px; background: rgba(10,10,10,0.8); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
 .nav-name { font-size: 13px; letter-spacing: 0.08em; color: var(--text); user-select: none; transition: color 0.2s; }
 .nav-name:hover { color: var(--accent); }
@@ -54,12 +58,17 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; j
 footer { text-align: center; padding: 36px 32px; color: #222; font-size: 11px; letter-spacing: 0.12em; opacity: 0; animation: fadeIn 0.6s ease 1s forwards; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.music-btn { position: fixed; bottom: 28px; right: 28px; width: 38px; height: 38px; border: 1px solid var(--border); border-radius: 50%; background: rgba(10,10,10,0.8); color: var(--accent); font-size: 12px; display: flex; align-items: center; justify-content: center; z-index: 200; transition: border-color 0.2s; backdrop-filter: blur(10px); }
+.music-btn:hover { border-color: var(--accent); }
 @media (max-width: 520px) { nav { padding: 18px 20px; } .hero { padding: 75px 20px 36px; } .sep { margin: 0 20px; } #gallery { padding: 28px 20px; } #links { padding: 28px 20px; } .gallery-grid { grid-template-columns: repeat(2, 1fr); } .link-handle { display: none; } }
 </style>
 </head>
 <body>
+<div class="film-intro" id="filmIntro"><span>Naiyaz Nafis</span></div>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
+<button class="music-btn" id="musicBtn">▶</button>
+<audio id="audio" loop src="tunetank-cinematic-ambient-348342.mp3"></audio>
 <div class="lightbox" id="lightbox">
   <span class="lightbox-close" id="lbClose">✕</span>
   <img id="lbImg" src="" alt="">
@@ -159,6 +168,15 @@ document.querySelectorAll('.gallery-grid img').forEach(img => {
 document.getElementById('lbClose').addEventListener('click', () => lightbox.classList.remove('open'));
 lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open'); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+const audio = document.getElementById('audio');
+const musicBtn = document.getElementById('musicBtn');
+musicBtn.addEventListener('click', () => {
+  if (audio.paused) { audio.play(); musicBtn.textContent = '▐▐'; }
+  else { audio.pause(); musicBtn.textContent = '▶'; }
+});
+setTimeout(() => {
+  document.getElementById('filmIntro').style.display = 'none';
+}, 2900);
 </script>
 </body>
 </html>
